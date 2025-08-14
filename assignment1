@@ -1,0 +1,420 @@
+//q1
+
+#include <stdio.h>
+#include <stdlib.h> 
+
+
+void createArray(int arr[], int size) {
+    printf("Enter %d elements:\n", size);
+    for (int i = 0; i < size; i++) {
+        printf("Element %d: ", i + 1);
+        scanf("%d", &arr[i]);
+    }
+    printf("Array created successfully.\n");
+}
+
+
+void displayArray(int arr[], int size) {
+    if (size == 0) {
+        printf("Array is empty.\n");
+        return;
+    }
+    printf("Array elements: [ ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("]\n");
+}
+
+
+int insertElement(int arr[], int *size, int capacity, int element, int position) {
+    if (*size >= capacity) {
+        printf("Array is full. Cannot insert.\n");
+        return *size;
+    }
+    if (position < 0 || position > *size) {
+        printf("Invalid position for insertion.\n");
+        return *size;
+    }
+
+    for (int i = *size - 1; i >= position; i--) {
+        arr[i + 1] = arr[i];
+    }
+    arr[position] = element; 
+    (*size)++;
+    printf("Element %d inserted at position %d successfully.\n", element, position);
+    return *size;
+}
+
+
+int deleteElement(int arr[], int *size, int position) {
+    if (*size == 0) {
+        printf("Array is empty. Nothing to delete.\n");
+        return *size;
+    }
+    if (position < 0 || position >= *size) {
+        printf("Invalid position for deletion.\n");
+        return *size;
+    }
+
+    printf("Element %d deleted from position %d.\n", arr[position], position);
+
+    for (int i = position; i < *size - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    (*size)--; 
+    return *size;
+}
+
+
+void linearSearch(int arr[], int size, int element) {
+    if (size == 0) {
+        printf("Array is empty. Cannot search.\n");
+        return;
+    }
+    int found = 0;
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == element) {
+            printf("Element %d found at position %d (index %d).\n", element, i + 1, i);
+            found = 1;
+            break; 
+        }
+    }
+    if (!found) {
+        printf("Element %d not found in the array.\n", element);
+    }
+}
+
+int main() {
+    int capacity = 100; 
+    int arr[capacity];
+    int currentSize = 0; 
+    int choice, element, position;
+
+    do {
+        printf("\n--- Array Operations Menu ---\n");
+        printf("1. CREATE\n");
+        printf("2. DISPLAY\n");
+        printf("3. INSERT\n");
+        printf("4. DELETE\n");
+        printf("5. LINEAR SEARCH\n");
+        printf("6. EXIT\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter the number of elements to create (max %d): ", capacity);
+                scanf("%d", &currentSize);
+                if (currentSize < 0 || currentSize > capacity) {
+                    printf("Invalid number of elements.\n");
+                    currentSize = 0; 
+                } else {
+                    createArray(arr, currentSize);
+                }
+                break;
+            case 2:
+                displayArray(arr, currentSize);
+                break;
+            case 3:
+                printf("Enter the element to insert: ");
+                scanf("%d", &element);
+                printf("Enter the position to insert at (0 to %d): ", currentSize);
+                scanf("%d", &position);
+                currentSize = insertElement(arr, &currentSize, capacity, element, position);
+                break;
+            case 4:
+                printf("Enter the position to delete from (0 to %d): ", currentSize - 1);
+                scanf("%d", &position);
+                currentSize = deleteElement(arr, &currentSize, position);
+                break;
+            case 5:
+                printf("Enter the element to search: ");
+                scanf("%d", &element);
+                linearSearch(arr, currentSize, element);
+                break;
+            case 6:
+                printf("Exiting program. Goodbye!\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    } while (choice != 6);
+
+    return 0;
+}
+
+
+//q2
+
+#include <stdio.h>
+
+
+int removeDuplicates(int arr[], int size) {
+    if (size == 0 || size == 1) {
+        return size; 
+    }
+
+    int i, j, k;
+    for (i = 0; i < size; i++) {
+        for (j = i + 1; j < size; j++) {
+            
+            if (arr[i] == arr[j]) {
+                
+                for (k = j; k < size - 1; k++) {
+                    arr[k] = arr[k + 1];
+                }
+                size--; 
+                j--;    
+            }
+        }
+    }
+    return size;
+}
+
+int main() {
+    int arr[] = {10, 20, 20, 30, 40, 10, 50, 60, 60, 70};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    printf("Original Array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    n = removeDuplicates(arr, n);
+
+    printf("Array after removing duplicates: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+//q3 
+
+10000
+
+//q4(a)
+
+
+#include <stdio.h>
+
+
+void reverseArray(int arr[], int size) {
+    int start = 0;
+    int end = size - 1;
+    int temp;
+
+    while (start < end) {
+        
+        temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
+
+        
+        start++;
+        end--;
+    }
+}
+
+int main() {
+    int arr[] = {1, 2, 3, 4, 5, 6};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    printf("Original Array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    reverseArray(arr, n);
+
+    printf("Reversed Array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    
+    int arr2[] = {10, 20, 30, 40, 50};
+    int n2 = sizeof(arr2) / sizeof(arr2[0]);
+    printf("Original Array 2: ");
+    for (int i = 0; i < n2; i++) {
+        printf("%d ", arr2[i]);
+    }
+    printf("\n");
+    reverseArray(arr2, n2);
+    printf("Reversed Array 2: ");
+    for (int i = 0; i < n2; i++) {
+        printf("%d ", arr2[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+
+//q4(b)
+
+#include <stdio.h>
+
+#define ROW1 2
+#define COL1 3
+#define COL2 2
+
+int main() {
+    int matrix1[ROW1][COL1] = {
+        {1, 2, 3},
+        {4, 5, 6}
+    };
+
+    int matrix2[COL1][COL2] = { 
+        {7, 8},
+        {9, 1},
+        {2, 3}
+    };
+
+    int resultMatrix[ROW1][COL2]; 
+
+    
+    for (int i = 0; i < ROW1; i++) {
+        for (int j = 0; j < COL2; j++) {
+            resultMatrix[i][j] = 0;
+        }
+    }
+
+    printf("Matrix 1 (%d x %d):\n", ROW1, COL1);
+    for (int i = 0; i < ROW1; i++) {
+        for (int j = 0; j < COL1; j++) {
+            printf("%d ", matrix1[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\nMatrix 2 (%d x %d):\n", COL1, COL2);
+    for (int i = 0; i < COL1; i++) {
+        for (int j = 0; j < COL2; j++) {
+            printf("%d ", matrix2[i][j]);
+        }
+        printf("\n");
+    }
+
+
+    for (int i = 0; i < ROW1; i++) {
+    
+        for (int j = 0; j < COL2; j++) {
+            
+            for (int k = 0; k < COL1; k++) {
+                resultMatrix[i][j] += matrix1[i][k] * matrix2[k][j];
+            }
+        }
+    }
+
+    printf("\nResultant Matrix (Matrix1 * Matrix2) (%d x %d):\n", ROW1, COL2);
+    for (int i = 0; i < ROW1; i++) {
+        for (int j = 0; j < COL2; j++) {
+            printf("%d ", resultMatrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+
+//q4(c)
+
+#include <stdio.h>
+
+#define ROWS 3
+#define COLS 2
+
+int main() {
+    int originalMatrix[ROWS][COLS] = {
+        {1, 2},
+        {3, 4},
+        {5, 6}
+    };
+
+    
+    int transposeMatrix[COLS][ROWS];
+
+    printf("Original Matrix (%d x %d):\n", ROWS, COLS);
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            printf("%d ", originalMatrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            transposeMatrix[j][i] = originalMatrix[i][j];
+        }
+    }
+
+    printf("\nTranspose Matrix (%d x %d):\n", COLS, ROWS);
+    for (int i = 0; i < COLS; i++) {
+        for (int j = 0; j < ROWS; j++) {
+            printf("%d ", transposeMatrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+
+//q5
+
+
+#include <stdio.h>
+
+#define ROWS 3
+#define COLS 4
+
+int main() {
+    int matrix[ROWS][COLS] = {
+        {1, 2, 3, 4},
+        {5, 6, 7, 8},
+        {9, 10, 11, 12}
+    };
+
+    int i, j;
+    int rowSum[ROWS] = {0}; 
+    int colSum[COLS] = {0}; 
+
+    printf("The Matrix:\n");
+    for (i = 0; i < ROWS; i++) {
+        for (j = 0; j < COLS; j++) {
+            printf("%d\t", matrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    
+    for (i = 0; i < ROWS; i++) {
+        for (j = 0; j < COLS; j++) {
+            rowSum[i] += matrix[i][j];
+        }
+    }
+
+    for (j = 0; j < COLS; j++) {
+        for (i = 0; i < ROWS; i++) {
+            colSum[j] += matrix[i][j];
+        }
+    }
+
+    printf("\nSum of Rows:\n");
+    for (i = 0; i < ROWS; i++) {
+        printf("Sum of Row %d: %d\n", i + 1, rowSum[i]);
+    }
+
+    printf("\nSum of Columns:\n");
+    for (j = 0; j < COLS; j++) {
+        printf("Sum of Column %d: %d\n", j + 1, colSum[j]);
+    }
+
+    return 0;
+}
